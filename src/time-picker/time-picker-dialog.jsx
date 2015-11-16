@@ -17,6 +17,7 @@ const TimePickerDialog = React.createClass({
   },
 
   propTypes: {
+    autoOk: React.PropTypes.bool,
     initialTime: React.PropTypes.object,
     onAccept: React.PropTypes.func,
     onShow: React.PropTypes.func,
@@ -36,6 +37,7 @@ const TimePickerDialog = React.createClass({
 
   getInitialState () {
     return {
+      open: false,
       muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme),
     };
   },
@@ -61,6 +63,7 @@ const TimePickerDialog = React.createClass({
       initialTime,
       onAccept,
       format,
+      autoOk,
       ...other,
     } = this.props;
 
@@ -90,6 +93,8 @@ const TimePickerDialog = React.createClass({
         onTouchTap={this._handleOKTouchTap} />,
     ];
 
+    const onClockChangeMinutes = (autoOk === true ? this._handleOKTouchTap : undefined);
+
     return (
       <Dialog {...other}
         ref="dialogWindow"
@@ -99,21 +104,28 @@ const TimePickerDialog = React.createClass({
         contentStyle={styles.dialogContent}
         onDismiss={this._handleDialogDismiss}
         onShow={this._handleDialogShow}
-        repositionOnUpdate={false}>
+        repositionOnUpdate={false}
+        open={this.state.open}
+        onRequestClose={this.dismiss}>
         <Clock
           ref="clock"
           format={format}
-          initialTime={initialTime} />
+          initialTime={initialTime}
+          onChangeMinutes={onClockChangeMinutes} />
       </Dialog>
     );
   },
 
   show() {
-    this.refs.dialogWindow.show();
+    this.setState({
+      open: true,
+    });
   },
 
   dismiss() {
-    this.refs.dialogWindow.dismiss();
+    this.setState({
+      open: false,
+    });
   },
 
   _handleCancelTouchTap() {
@@ -139,9 +151,9 @@ const TimePickerDialog = React.createClass({
     }
   },
 
-  _handleWindowKeyUp(e) {
+  _handleWindowKeyUp(event) {
     if (this.refs.dialogWindow.isOpen()) {
-      switch (e.keyCode) {
+      switch (event.keyCode) {
         case KeyCode.ENTER:
           this._handleOKTouchTap();
           break;

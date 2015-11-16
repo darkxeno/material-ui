@@ -104,13 +104,13 @@ const RadioButton = React.createClass({
 
     let styles = this.getStyles();
     let onStyles =
-      this.mergeAndPrefix(
+      this.mergeStyles(
         styles.target,
         this.props.checked && styles.targetWhenChecked,
         this.props.iconStyle,
         this.props.disabled && styles.targetWhenDisabled);
     let offStyles =
-      this.mergeAndPrefix(
+      this.mergeStyles(
         styles.fill,
         this.props.checked && styles.fillWhenChecked,
         this.props.iconStyle,
@@ -137,12 +137,12 @@ const RadioButton = React.createClass({
 
     let rippleColor = this.props.checked ? this.getTheme().checkedColor : this.getTheme().borderColor;
 
-    let iconStyle = this.mergeAndPrefix(
+    let iconStyle = this.mergeStyles(
       styles.icon,
       this.props.iconStyle
     );
 
-    let labelStyle = this.mergeAndPrefix(
+    let labelStyle = this.mergeStyles(
       styles.label,
       this.props.labelStyle
     );

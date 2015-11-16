@@ -11,6 +11,10 @@ const ToolbarSeparator = React.createClass({
     muiTheme: React.PropTypes.object,
   },
 
+  propTypes: {
+    style: React.PropTypes.object,
+  },
+  
   //for passing default theme context to children
   childContextTypes: {
     muiTheme: React.PropTypes.object,
@@ -44,7 +48,7 @@ const ToolbarSeparator = React.createClass({
   },
 
   render() {
-    let styles = this.mergeAndPrefix({
+    let styles = this.prepareStyles({
       backgroundColor: this.getTheme().separatorColor,
       display: 'inline-block',
       height: this.getSpacing().desktopGutterMore,
